@@ -1,0 +1,65 @@
+name: Publish SuperMacroV1 v1.0.3
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/release-v1.0.3.yml
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    if: github.event.head_commit.message == 'Publier la release v1.0.3'
+    runs-on: windows-latest
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Installer les outils Windows
+        shell: pwsh
+        run: |
+          if (-not (Get-Command magick -ErrorAction SilentlyContinue)) {
+            choco install imagemagick.app -y --no-progress
+          }
+          if (-not (Test-Path "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe")) {
+            choco install innosetup -y --no-progress
+          }
+
+      - name: Générer l'icône
+        shell: pwsh
+        run: |
+          magick assets/DistroStudios.png -background none -define icon:auto-resize=256,128,64,48,32,16 src/SuperMacroV1/app.ico
+
+      - name: Compiler SuperMacroV1
+        shell: pwsh
+        run: |
+          dotnet publish src/SuperMacroV1/SuperMacroV1.csproj `
+            --configuration Release `
+            --runtime win-x64 `
+            --self-contained true `
+            --output dist/app `
+            -p:PublishSingleFile=true `
+            -p:IncludeNativeLibrariesForSelfExtract=true `
+            -p:DebugType=None `
+            -p:DebugSymbols=false
+
+      - name: Construire l'installateur
+        shell: pwsh
+        run: |
+          & "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe" "installer/SuperMacroV1.iss"
+
+      - name: Publier la release
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $installer = "installer/output/SuperMacroV1-Setup.exe"
+          $notes = "SuperMacroV1 1.0.3 ajoute une section Blox Fruits avec les presets Air Dash, Soru vers Air Dash et Air Jump vers Soru et Dash. Le délai et le raccourci sont réglables, Roblox peut être exigé au premier plan et F12 annule immédiatement la séquence."
+          gh release create "v1.0.3" $installer --target "$env:GITHUB_SHA" --title "SuperMacroV1 v1.0.3" --notes $notes --latest
