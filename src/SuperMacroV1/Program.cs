@@ -178,7 +178,7 @@ internal sealed class MainForm : Form
 
         var subtitle = new Label
         {
-            Text = "DistroStudios • Minecraft • Roblox",
+            Text = "DistroStudios • Tous clients Minecraft • Roblox",
             ForeColor = Muted,
             AutoSize = true,
             Location = new Point(113, 63)
@@ -233,7 +233,7 @@ internal sealed class MainForm : Form
         _autoStart.AutoSize = true;
         card.Controls.Add(_autoStart);
 
-        _gamesOnly.Text = "Cliquer seulement si Minecraft ou Roblox est au premier plan";
+        _gamesOnly.Text = "Filtrer aux clients Minecraft/Roblox reconnus (décoché = universel)";
         SetupCheckBox(_gamesOnly, 24, 310);
         _gamesOnly.AutoSize = true;
         card.Controls.Add(_gamesOnly);
@@ -577,6 +577,21 @@ internal static class NativeMethods
         };
     }
 
+    private static readonly string[] SupportedProcessMarkers =
+    {
+        "minecraft", "java", "javaw", "lunar", "cmclient", "badlion",
+        "feather", "labymod", "salwyrr", "prism", "multimc", "curseforge",
+        "modrinth", "sklauncher", "tlauncher", "gdlauncher", "atlauncher",
+        "technic", "ftb", "robloxplayerbeta"
+    };
+
+    private static readonly string[] SupportedTitleMarkers =
+    {
+        "minecraft", "lunar client", "cmclient", "badlion", "feather client",
+        "labymod", "salwyrr", "prism launcher", "multimc", "curseforge",
+        "modrinth", "fabric", "forge", "quilt", "optifine", "roblox"
+    };
+
     public static bool IsSupportedGameForeground()
     {
         try
@@ -592,14 +607,23 @@ internal static class NativeMethods
             GetWindowThreadProcessId(window, out uint processId);
             string process = Process.GetProcessById((int)processId).ProcessName.ToLowerInvariant();
 
-            return title.Contains("minecraft") ||
-                   title.Contains("roblox") ||
-                   process.Contains("minecraft") ||
-                   process.Contains("robloxplayerbeta");
+            return ContainsAny(process, SupportedProcessMarkers) ||
+                   ContainsAny(title, SupportedTitleMarkers);
         }
         catch
         {
             return false;
         }
+    }
+
+    private static bool ContainsAny(string value, IEnumerable<string> markers)
+    {
+        foreach (string marker in markers)
+        {
+            if (value.Contains(marker, StringComparison.OrdinalIgnoreCase))
+                return true;
+        }
+
+        return false;
     }
 }
