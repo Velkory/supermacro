@@ -1,5 +1,5 @@
 #define MyAppName "SuperMacroV1"
-#define MyAppVersion "1.0.2"
+#define MyAppVersion "1.0.3"
 #define MyAppPublisher "DistroStudios"
 #define MyAppExeName "SuperMacroV1.exe"
 
