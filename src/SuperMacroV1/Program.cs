@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using System.Drawing;
 using System.Runtime.InteropServices;
+using System.Reflection;
 using System.Text;
 using System.Text.Json;
 using System.Windows.Forms;
@@ -150,22 +151,37 @@ internal sealed class MainForm : Form
 
     private void BuildInterface()
     {
+        var logo = new PictureBox
+        {
+            Location = new Point(27, 18),
+            Size = new Size(70, 70),
+            SizeMode = PictureBoxSizeMode.Zoom,
+            BackColor = Color.Transparent
+        };
+        using (Stream? logoStream = Assembly.GetExecutingAssembly()
+                   .GetManifestResourceStream("SuperMacroV1.DistroStudios.png"))
+        {
+            if (logoStream is not null)
+                logo.Image = new Bitmap(logoStream);
+        }
+        Controls.Add(logo);
+
         var title = new Label
         {
             Text = "SuperMacroV1",
             Font = new Font("Segoe UI Semibold", 24F),
             ForeColor = Foreground,
             AutoSize = true,
-            Location = new Point(28, 22)
+            Location = new Point(110, 18)
         };
         Controls.Add(title);
 
         var subtitle = new Label
         {
-            Text = "Auto-clic Windows • Minecraft • Roblox",
+            Text = "DistroStudios • Minecraft • Roblox",
             ForeColor = Muted,
             AutoSize = true,
-            Location = new Point(31, 67)
+            Location = new Point(113, 63)
         };
         Controls.Add(subtitle);
 
