@@ -1,4 +1,4 @@
-# SuperMacroV1
+# SuperMacroV1 v1.0.2
 
 Application Windows d'auto-clic avec panneau de configuration.
 
@@ -10,6 +10,8 @@ Application Windows d'auto-clic avec panneau de configuration.
 - Raccourci personnalisable avec Ctrl, Alt et Maj
 - Arrêt d'urgence global avec **F12**
 - Démarrage automatique de la macro à l'ouverture
+- Mode universel pour tous les clients Minecraft
+- Détection de Minecraft Java/Bedrock, CMClient, Lunar, Badlion, Feather, LabyMod, Prism, MultiMC, CurseForge, Modrinth et autres clients Java
 - Limitation optionnelle à Minecraft et Roblox
 - Paramètres persistants
 - Installateur Windows par utilisateur
@@ -32,3 +34,10 @@ dotnet publish src/SuperMacroV1/SuperMacroV1.csproj -c Release -r win-x64 --self
 SuperMacroV1 envoie des clics via l'API Windows standard `SendInput`. Il ne fait aucune injection dans les processus et ne tente pas de contourner les protections des jeux.
 
 Respectez les règles des serveurs Minecraft et des expériences Roblox : certains interdisent les macros ou les autoclickers.
+
+## Nouveautés 1.0.2
+
+- Mode universel lorsque le filtre de fenêtre est décoché
+- Reconnaissance étendue des processus Java et des principaux clients Minecraft
+- Libellés du panneau clarifiés pour le mode universel
+- Version de l'application et de l'installateur mise à jour
