@@ -1,4 +1,4 @@
-# SuperMacroV1 v1.0.2
+# SuperMacroV1 v1.0.3
 
 Application Windows d'auto-clic avec panneau de configuration.
 
@@ -41,3 +41,14 @@ Respectez les règles des serveurs Minecraft et des expériences Roblox : certai
 - Reconnaissance étendue des processus Java et des principaux clients Minecraft
 - Libellés du panneau clarifiés pour le mode universel
 - Version de l'application et de l'installateur mise à jour
+
+## Nouveautés 1.0.3 — Blox Fruits
+
+- Section dédiée accessible depuis le panneau principal
+- Preset Air Dash : Espace puis Q
+- Preset Soru vers Air Dash : R, Espace puis Q
+- Preset Air Jump vers Soru et Dash : Espace, R puis Q
+- Délai réglable de 20 à 500 ms
+- Raccourci global configurable, F8 par défaut
+- Vérification optionnelle que Roblox est au premier plan
+- F12 annule immédiatement la séquence
